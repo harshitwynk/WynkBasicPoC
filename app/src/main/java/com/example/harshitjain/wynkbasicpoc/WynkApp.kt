@@ -42,7 +42,7 @@ class WynkApp : Application() {
 
         apiService = retrofit.create<ApiService>(ApiService::class.java)
 
-        roomDatabase = Room.databaseBuilder(this, WynkDB::class.java, "wynkMusic.db").build()
+        roomDatabase = Room.databaseBuilder(this, WynkDB::class.java, "wynkMusic.db").fallbackToDestructiveMigration().build()
         itemDao = roomDatabase.itemDao()
         collectionDao = roomDatabase.collectionDao()
         itemRepository = ItemRepository(instance.appExecuter, instance.apiService, instance.itemDao, collectionDao)

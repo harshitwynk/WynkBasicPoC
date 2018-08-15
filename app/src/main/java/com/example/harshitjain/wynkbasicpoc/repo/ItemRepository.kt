@@ -1,6 +1,7 @@
 package com.example.harshitjain.wynkbasicpoc.repo
 
 import android.arch.lifecycle.LiveData
+import android.util.Log
 import com.example.harshitjain.wynkbasicpoc.db.Collection
 import com.example.harshitjain.wynkbasicpoc.db.CollectionDao
 import com.example.harshitjain.wynkbasicpoc.db.Item
@@ -12,23 +13,28 @@ class ItemRepository(private val appExecutors: AppExecutors, private val apiServ
     fun loadItem(id: String, type: String, count: Int, offset: Int, childType: String): LiveData<Resource<List<Item>>> {
         return object : NetworkBoundResource<List<Item>, Item>(appExecutors) {
             override fun saveCallResult(entity: Item) {
+
+                Log.v("hjhj", "saveCallResult() : | entityID=" + entity.id + "  |  title=" + entity.title)
                 itemDao.insertItem(entity)
                 saveChildItems(entity.items)
                 updateCollection(entity)
             }
 
             override fun shouldFetch(data: List<Item>?): Boolean {
+                Log.v("hjhj", "shouldFetch() : | data=" + data + "  |  data size=" + data?.size)
                 return data == null || data.isEmpty()
 //                return true
             }
 
             override fun loadFromDb(): LiveData<List<Item>> {
+                Log.v("hjhj", "loadFromDb() : ")
 //                return itemDao.loadItemById(id)
 //                return itemDao.loadItemList(childType)
                 return getItem(id, type)
             }
 
             override fun createCall(): LiveData<ApiResponse<Item>> {
+                Log.v("hjhj", "createCall() : |")
                 return apiService.getItem(id, type, count, offset)
             }
 
@@ -50,7 +56,7 @@ class ItemRepository(private val appExecutors: AppExecutors, private val apiServ
 
 
         entity.items?.forEach {
-            val collection = Collection(entity.id, it.id, rank!!)
+            val collection = Collection(entity.id, it.id, it.title!!, rank!!)
             collections.add(collection)
             rank++
         }
@@ -61,8 +67,6 @@ class ItemRepository(private val appExecutors: AppExecutors, private val apiServ
     }
 
     private fun getItem(id: String, type: String): LiveData<List<Item>> {
-        if (type != "song") {
-
-        }
+        return itemDao.loadSongItems(id)
     }
 }

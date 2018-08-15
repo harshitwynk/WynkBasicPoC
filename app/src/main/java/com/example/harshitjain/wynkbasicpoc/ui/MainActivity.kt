@@ -22,12 +22,13 @@ class MainActivity : AppCompatActivity(), GridFragment.OnListFragmentInteraction
 
     private fun initToolbar(toolbar: Toolbar?) {
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
         toolbar?.title = "Wynk Music"
         supportActionBar?.title = "Wynk Music"
     }
 
     override fun onListFragmentInteraction(item: Item?) {
+        toolbar?.title = item?.title
         supportFragmentManager?.beginTransaction()?.addToBackStack(null)?.add(R.id.fragment_container, HomeFragment.newInstance(item?.id, item?.type))?.commit()
     }
 }

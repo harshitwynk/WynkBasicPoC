@@ -18,11 +18,11 @@ abstract class CollectionDao {
     @Delete
     abstract fun deleteCollectionList(collections: List<Collection>?)
 
-    @Query("select * from Collection")
+  /*  @Query("select * from Collection")
     abstract fun loadCollectionList(type: String): LiveData<List<Collection>>
 
     @Query("select * from Collection")
-    abstract fun loadCollectionById(id: String): LiveData<Collection>
+    abstract fun loadCollectionById(id: String): LiveData<Collection>*/
 
     @Query("delete from Collection")
     abstract fun clearCollections()

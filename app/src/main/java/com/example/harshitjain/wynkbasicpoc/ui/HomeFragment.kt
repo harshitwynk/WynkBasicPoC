@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import com.example.harshitjain.wynkbasicpoc.R
 import com.example.harshitjain.wynkbasicpoc.WynkApp
 import com.example.harshitjain.wynkbasicpoc.repo.ItemRepository
+import com.example.harshitjain.wynkbasicpoc.repo.Status
 import com.example.harshitjain.wynkbasicpoc.viewModel.HomeViewModel
 import com.example.harshitjain.wynkbasicpoc.viewModel.HomeViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -70,6 +71,13 @@ class HomeFragment : Fragment() {
             //            var items = mutableListOf<Item>()
 
 //            it?.data?.let { items.add(it) }
+            if (it?.status==Status.LOADING){
+                progress_bar.visibility=View.VISIBLE
+                recyclerView.visibility=View.GONE
+            }else{
+                progress_bar.visibility=View.GONE
+                recyclerView.visibility=View.VISIBLE
+            }
             adapter.setData(it?.data)
         })
     }

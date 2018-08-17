@@ -27,6 +27,12 @@ abstract class ItemDao {
     @Query("delete from Item")
     abstract fun clearItemList()
 
-    @Query("SELECT B.item_id AS collection_item_id, * FROM Collection B LEFT JOIN Item A ON A.id=B.item_id WHERE  B.collection_id=:collectionId ORDER BY B.rank ASC LIMIT 50")
+    @Query("Select count(*) from Item")
+    abstract fun getItemCount(): Int
+
+    @Query("Select * from Item where type = :type Limit 1")
+    abstract fun getFirstItemForType(type: String): Item?
+
+    @Query("SELECT B.item_id AS collection_item_id, A.* FROM Collection B LEFT JOIN Item A ON A.id=B.item_id WHERE  B.collection_id=:collectionId ORDER BY B.rank ASC LIMIT 100")
     abstract fun loadSongItems(collectionId: String): LiveData<List<Item>>
 }

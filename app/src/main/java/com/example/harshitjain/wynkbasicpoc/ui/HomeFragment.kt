@@ -9,12 +9,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.harshitjain.wynkbasicpoc.R
 import com.example.harshitjain.wynkbasicpoc.WynkApp
-import com.example.harshitjain.wynkbasicpoc.repo.ItemRepository
 import com.example.harshitjain.wynkbasicpoc.repo.Status
 import com.example.harshitjain.wynkbasicpoc.viewModel.HomeViewModel
 import com.example.harshitjain.wynkbasicpoc.viewModel.HomeViewModelFactory
@@ -78,7 +78,11 @@ class HomeFragment : Fragment() {
                 progress_bar.visibility=View.GONE
                 recyclerView.visibility=View.VISIBLE
             }
-            adapter.setData(it?.data)
+
+            it?.data?.run {
+                Log.v("hjhj", "data set() --> ${this.size}")
+                adapter.setData(this)
+            }
         })
     }
 

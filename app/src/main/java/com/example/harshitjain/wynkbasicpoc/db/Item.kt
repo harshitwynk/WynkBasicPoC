@@ -5,10 +5,24 @@ import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 
 @Entity
-class Item {
+class Item() {
+    constructor(item: Item) : this() {
+        id = item.id;
+        smallImage = item.smallImage
+        total = item.total
+        title = item.title
+        subtitle = item.subtitle
+        count = item.count
+        offset = item.offset
+        type = item.type
+        duration = item.duration
+        itemContentLang = item.itemContentLang
+
+        items = item.items
+    }
 
     @PrimaryKey
-    var id: String=""
+    var id: String = ""
 
     var smallImage: String? = null
     var total: Int? = null

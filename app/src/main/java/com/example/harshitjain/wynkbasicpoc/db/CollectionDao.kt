@@ -1,6 +1,5 @@
 package com.example.harshitjain.wynkbasicpoc.db
 
-import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 
 @Dao

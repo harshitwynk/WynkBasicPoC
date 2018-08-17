@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.harshitjain.wynkbasicpoc.R
 import com.example.harshitjain.wynkbasicpoc.WynkApp
+import com.example.harshitjain.wynkbasicpoc.db.Collection.Companion.TOP_PLAYLIST_ID
 import com.example.harshitjain.wynkbasicpoc.db.Item
 import com.example.harshitjain.wynkbasicpoc.viewModel.HomeViewModel
 import com.example.harshitjain.wynkbasicpoc.viewModel.HomeViewModelFactory
@@ -25,8 +26,6 @@ import kotlinx.android.synthetic.main.fragment_grid.*
  * [GridFragment.OnListFragmentInteractionListener] interface.
  */
 class GridFragment : Fragment() {
-
-    private val TOP_PLAYLIST_ID = "srch_bsb_1490263494633,srch_bsb_1402666444551"
 
     // TODO: Customize parameters
     private var columnCount = 1
@@ -45,9 +44,8 @@ class GridFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_grid, container, false)
 
-        return view
+        return inflater.inflate(R.layout.fragment_grid, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

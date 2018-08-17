@@ -3,6 +3,7 @@ package com.example.harshitjain.wynkbasicpoc.repo
 import android.arch.lifecycle.LiveData
 import android.util.Log
 import com.example.harshitjain.wynkbasicpoc.db.Collection
+import com.example.harshitjain.wynkbasicpoc.db.Collection.Companion.TOP_PLAYLIST_ID
 import com.example.harshitjain.wynkbasicpoc.db.CollectionDao
 import com.example.harshitjain.wynkbasicpoc.db.Item
 import com.example.harshitjain.wynkbasicpoc.db.ItemDao
@@ -18,6 +19,27 @@ class ItemRepository(private val appExecutors: AppExecutors, private val apiServ
                 itemDao.insertItem(entity)
                 saveChildItems(entity.items)
                 updateCollection(entity)
+
+                // Insert dummy data in db to increase its size to more than 10000
+                if (itemDao.getItemCount() < DUMMY_DATA_SIZE) {
+                    val timestamp = System.currentTimeMillis()
+                    val playlist: Item = itemDao.getFirstItemForType("PLAYLIST") ?: return
+                    playlist.id = timestamp.toString()
+                    playlist.count = DUMMY_DATA_SIZE
+                    playlist.offset = 0
+                    val song: Item = itemDao.getFirstItemForType("SONG") ?: return
+
+                    val itemsList = mutableListOf<Item>()
+                    for (i in 1..DUMMY_DATA_SIZE) {
+                        song.id = (timestamp + i).toString()
+                        itemsList.add(Item(song))
+                    }
+                    playlist.items = itemsList
+                    itemDao.insertItem(playlist)
+                    saveChildItems(playlist.items)
+                    updateCollection(playlist)
+                    collectionDao.insertCollection(Collection(TOP_PLAYLIST_ID, playlist.id, playlist.title?: "", playlist.offset?: 0))
+                }
             }
 
             override fun shouldFetch(data: List<Item>?): Boolean {
@@ -68,5 +90,9 @@ class ItemRepository(private val appExecutors: AppExecutors, private val apiServ
 
     private fun getItem(id: String, type: String): LiveData<List<Item>> {
         return itemDao.loadSongItems(id)
+    }
+
+    companion object {
+        const val DUMMY_DATA_SIZE = 10000
     }
 }
